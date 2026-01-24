@@ -1,0 +1,40 @@
+[general]
+name=ReinfoLib for QGIS
+qgisMinimumVersion=3.28
+qgisMaximumVersion=3.99
+description=Access Japan's Real Estate Information Library (MLIT) API directly from QGIS.
+about=This plugin provides direct access to the Real Estate Information Library API
+    provided by Japan's Ministry of Land, Infrastructure, Transport and Tourism (MLIT).
+
+    Features:
+    - Retrieve real estate transaction prices and land values
+    - Access urban planning data (zoning, fire prevention areas, etc.)
+    - Get facility information (schools, hospitals, welfare facilities)
+    - View disaster risk data (flood, landslide, tsunami)
+    - Export data as GeoPackage, GeoJSON, Shapefile, or CSV
+
+    Requirements:
+    - API key from MLIT (free registration required)
+    - Internet connection
+
+version=1.0.0
+author=Link Field
+email=saito@link-field.jp
+homepage=https://github.com/linkfield/reinfolib_qgis
+repository=https://github.com/linkfield/reinfolib_qgis
+tracker=https://github.com/linkfield/reinfolib_qgis/issues
+tags=japan,real estate,land price,urban planning,disaster,api,mlit,gis,property
+category=Web
+icon=icon.png
+experimental=False
+deprecated=False
+hasProcessingProvider=no
+server=False
+
+changelog=Version 1.0.0 (2025-01-24):
+    - Initial release
+    - Support for transaction prices and land values API
+    - Support for urban planning data API
+    - Support for facility information API
+    - Support for disaster risk data API
+    - Export to GeoPackage, GeoJSON, Shapefile, CSV

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReinfoLib for QGIS - ヘルプ</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #2980b9; margin-top: 30px; }
+        h3 { color: #27ae60; }
+        code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; }
+        .warning { background: #fff3cd; border-left: 4px solid #ffc107; padding: 10px; margin: 10px 0; }
+        .info { background: #d1ecf1; border-left: 4px solid #17a2b8; padding: 10px; margin: 10px 0; }
+        table { border-collapse: collapse; width: 100%; margin: 15px 0; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background: #3498db; color: white; }
+        tr:nth-child(even) { background: #f9f9f9; }
+    </style>
+</head>
+<body>
+    <h1>ReinfoLib for QGIS</h1>
+    <p>不動産情報ライブラリAPIをQGISから直接利用するためのプラグインです。</p>
+
+    <h2>目次</h2>
+    <ul>
+        <li><a href="#setup">セットアップ</a></li>
+        <li><a href="#apikey">APIキーの取得</a></li>
+        <li><a href="#usage">使い方</a></li>
+        <li><a href="#apis">対応API一覧</a></li>
+        <li><a href="#troubleshooting">トラブルシューティング</a></li>
+    </ul>
+
+    <h2 id="setup">セットアップ</h2>
+    <ol>
+        <li>QGISのプラグインマネージャーから「ReinfoLib for QGIS」をインストール</li>
+        <li>プラグインを有効化</li>
+        <li>Webメニューから「ReinfoLib」→「設定」を開く</li>
+        <li>APIキーを入力して保存</li>
+    </ol>
+
+    <h2 id="apikey">APIキーの取得</h2>
+    <div class="info">
+        <p>APIキーは国土交通省の不動産情報ライブラリから無料で取得できます。</p>
+    </div>
+    <ol>
+        <li><a href="https://www.reinfolib.mlit.go.jp/help/apiManual/" target="_blank">不動産情報ライブラリAPI</a>にアクセス</li>
+        <li>利用規約に同意</li>
+        <li>必要事項を入力して申請</li>
+        <li>メールでAPIキーを受け取る（通常数日以内）</li>
+    </ol>
+
+    <h2 id="usage">使い方</h2>
+    <h3>基本的な使い方</h3>
+    <ol>
+        <li>Webメニューから「ReinfoLib」→「データ取得」を選択</li>
+        <li>取得したいデータのカテゴリタブを選択（価格情報、都市計画、周辺施設、防災情報）</li>
+        <li>リストから取得したいAPIを選択</li>
+        <li>範囲を指定（現在の地図範囲または都道府県）</li>
+        <li>出力形式を選択</li>
+        <li>「データ取得」ボタンをクリック</li>
+    </ol>
+
+    <h3>出力形式</h3>
+    <table>
+        <tr><th>形式</th><th>説明</th><th>用途</th></tr>
+        <tr><td>メモリレイヤー</td><td>一時的なレイヤー</td><td>データの確認</td></tr>
+        <tr><td>GeoPackage</td><td>.gpkg形式</td><td>推奨、複数レイヤー対応</td></tr>
+        <tr><td>GeoJSON</td><td>.geojson形式</td><td>Web連携</td></tr>
+        <tr><td>Shapefile</td><td>.shp形式</td><td>従来形式、互換性重視</td></tr>
+    </table>
+
+    <h2 id="apis">対応API一覧</h2>
+    <h3>価格情報</h3>
+    <ul>
+        <li>不動産価格情報（取引価格・成約価格）</li>
+        <li>地価公示・地価調査ポイント</li>
+        <li>鑑定評価書情報</li>
+    </ul>
+
+    <h3>都市計画</h3>
+    <ul>
+        <li>用途地域</li>
+        <li>都市計画区域/区域区分</li>
+        <li>防火・準防火地域</li>
+        <li>立地適正化計画</li>
+    </ul>
+
+    <h3>周辺施設</h3>
+    <ul>
+        <li>学校・小学校区・中学校区</li>
+        <li>保育園・幼稚園</li>
+        <li>医療機関</li>
+        <li>福祉施設</li>
+        <li>駅別乗降客数</li>
+    </ul>
+
+    <h3>防災情報</h3>
+    <ul>
+        <li>洪水浸水想定区域</li>
+        <li>高潮浸水想定区域</li>
+        <li>土砂災害警戒区域</li>
+        <li>指定緊急避難場所</li>
+    </ul>
+
+    <h2 id="troubleshooting">トラブルシューティング</h2>
+    <div class="warning">
+        <h3>「APIキーが無効です」と表示される</h3>
+        <p>APIキーが正しく入力されているか確認してください。コピー＆ペースト時に余分な空白が含まれていないか確認してください。</p>
+    </div>
+
+    <div class="warning">
+        <h3>データが取得できない</h3>
+        <ul>
+            <li>インターネット接続を確認してください</li>
+            <li>選択した範囲にデータが存在しない可能性があります</li>
+            <li>APIサーバーが一時的に利用できない場合があります</li>
+        </ul>
+    </div>
+
+    <div class="warning">
+        <h3>取得に時間がかかる</h3>
+        <p>広い範囲を選択すると、多くのタイルを取得する必要があるため時間がかかります。より狭い範囲で試してください。</p>
+    </div>
+
+    <h2>サポート</h2>
+    <p>問題が解決しない場合は、GitHubのIssuesページで報告してください。</p>
+    <ul>
+        <li>GitHub: <a href="https://github.com/linkfield/reinfolib-qgis/issues" target="_blank">Issues</a></li>
+        <li>メール: info@linkfield.co.jp</li>
+    </ul>
+
+    <hr>
+    <p><small>Copyright (C) 2024 Link Field. Licensed under GPL-3.0.</small></p>
+</body>
+</html>

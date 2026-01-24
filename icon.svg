@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="32" cy="32" r="30" fill="#3498db" stroke="#2980b9" stroke-width="2"/>
+  
+  <!-- House roof -->
+  <polygon points="32,10 52,28 12,28" fill="#ecf0f1" stroke="#2c3e50" stroke-width="2"/>
+  
+  <!-- House body -->
+  <rect x="16" y="28" width="32" height="24" fill="#ecf0f1" stroke="#2c3e50" stroke-width="2"/>
+  
+  <!-- Door -->
+  <rect x="27" y="36" width="10" height="16" fill="#2c3e50"/>
+  
+  <!-- Window left -->
+  <rect x="19" y="32" width="6" height="6" fill="#3498db" stroke="#2c3e50" stroke-width="1"/>
+  
+  <!-- Window right -->
+  <rect x="39" y="32" width="6" height="6" fill="#3498db" stroke="#2c3e50" stroke-width="1"/>
+  
+  <!-- Yen symbol -->
+  <text x="32" y="58" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#27ae60" text-anchor="middle">&#165;</text>
+</svg>
