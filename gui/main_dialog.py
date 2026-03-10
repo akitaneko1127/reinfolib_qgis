@@ -8,7 +8,7 @@ Main dialog for fetching data from the Real Estate Information Library API.
 import datetime
 
 from qgis.PyQt.QtCore import Qt, QThread, pyqtSignal, QSize
-from qgis.PyQt.QtGui import QIcon
+
 from qgis.PyQt.QtWidgets import (
     QDialog,
     QVBoxLayout,
@@ -887,7 +887,7 @@ class MainDialog(QDialog):
             # Japan: lat 24-46, lon 122-154
             if not (24.0 <= lat <= 46.0 and 122.0 <= lon <= 154.0):
                 QgsMessageLog.logMessage(
-                    f'Coordinates outside Japan, skipping prefecture detection',
+                    'Coordinates outside Japan, skipping prefecture detection',
                     'ReinfoLib', Qgis.Info
                 )
                 # Update debug label
@@ -1104,7 +1104,9 @@ class MainDialog(QDialog):
 
             # Get year from combo (default to previous year if not available)
             default_year = str(datetime.datetime.now().year - 1)
-            year = self.combo_year.currentData() if hasattr(self, 'combo_year') and self.combo_year.currentData() else default_year
+            year = (self.combo_year.currentData()
+                    if hasattr(self, 'combo_year') and self.combo_year.currentData()
+                    else default_year)
 
             if api_id == 'XPT001':
                 # XPT001 (不動産価格ポイント) needs 'from' and 'to' parameters (YYYYQ format)
@@ -1287,7 +1289,7 @@ class MainDialog(QDialog):
 
         # Zoom to layer with safeguards
         if self.check_zoom_to_layer.isChecked() and layer:
-            from qgis.core import QgsMessageLog, Qgis, QgsCoordinateReferenceSystem
+            from qgis.core import QgsMessageLog, Qgis
 
             QgsMessageLog.logMessage('=== ZOOM TO LAYER START ===', 'ReinfoLib', Qgis.Info)
 
@@ -1300,7 +1302,6 @@ class MainDialog(QDialog):
             )
 
             # Get current canvas state before zoom
-            canvas_extent_before = self.canvas.extent()
             scale_before = self.canvas.scale()
             QgsMessageLog.logMessage(
                 f'Canvas BEFORE zoom: scale={scale_before:.0f}',

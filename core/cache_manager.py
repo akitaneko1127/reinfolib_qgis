@@ -5,7 +5,6 @@ Cache Manager for ReinfoLib QGIS Plugin
 Manages local caching of API responses to reduce network requests.
 """
 
-import os
 import json
 import hashlib
 import time
@@ -51,7 +50,7 @@ class CacheManager:
 
     def _generate_cache_key(self, url: str) -> str:
         """Generate a cache key from URL."""
-        return hashlib.md5(url.encode()).hexdigest()
+        return hashlib.sha256(url.encode()).hexdigest()
 
     def _get_cache_path(self, cache_key: str) -> Path:
         """Get the file path for a cache entry."""

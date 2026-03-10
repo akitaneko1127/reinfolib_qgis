@@ -8,7 +8,6 @@ Applies automatic styling to fetched layers.
 from typing import Optional, Dict, List, Tuple
 from qgis.core import (
     QgsVectorLayer,
-    QgsSymbol,
     QgsFillSymbol,
     QgsMarkerSymbol,
     QgsLineSymbol,
@@ -17,10 +16,7 @@ from qgis.core import (
     QgsGraduatedSymbolRenderer,
     QgsRendererRange,
     QgsSingleSymbolRenderer,
-    QgsSimpleFillSymbolLayer,
-    QgsSimpleMarkerSymbolLayer,
 )
-from qgis.PyQt.QtGui import QColor
 
 
 class StyleManager:
@@ -59,7 +55,7 @@ class StyleManager:
         (10000000, 30000000, (0, 255, 0), 8),      # 1000-3000万: green, size 8
         (30000000, 50000000, (255, 255, 0), 10),   # 3000-5000万: yellow, size 10
         (50000000, 100000000, (255, 165, 0), 12),  # 5000万-1億: orange, size 12
-        (100000000, float('inf'), (255, 0, 0), 14), # 1億~: red, size 14
+        (100000000, float('inf'), (255, 0, 0), 14),  # 1億~: red, size 14
     ]
 
     # Fire prevention area colors (防火地域)
@@ -222,7 +218,7 @@ class StyleManager:
 
         if not field_name:
             QgsMessageLog.logMessage(
-                f'XKT001: Could not find area classification field, using unique values',
+                'XKT001: Could not find area classification field, using unique values',
                 'ReinfoLib', Qgis.Info
             )
             # Try to find any suitable field and create categories from unique values
@@ -260,7 +256,6 @@ class StyleManager:
     def _apply_unique_values_style(cls, layer: QgsVectorLayer) -> bool:
         """Apply style based on unique values in the first string field."""
         from qgis.core import QgsMessageLog, Qgis
-        import random
 
         # Find a suitable field for categorization
         string_fields = [f for f in layer.fields() if f.type() == 10]  # QVariant.String = 10
@@ -569,7 +564,6 @@ class StyleManager:
     @classmethod
     def _apply_price_point_style(cls, layer: QgsVectorLayer) -> bool:
         """Apply real estate price point style."""
-        import re
         import warnings
         from qgis.core import QgsMessageLog, Qgis, QgsField
         from qgis.PyQt.QtCore import QVariant
@@ -586,7 +580,7 @@ class StyleManager:
 
         if not source_field:
             QgsMessageLog.logMessage(
-                f'Could not find u_transact field',
+                'Could not find u_transact field',
                 'ReinfoLib', Qgis.Warning
             )
             return cls._apply_default_style(layer)
@@ -701,7 +695,7 @@ class StyleManager:
             (100000, 300000, (0, 255, 0), 8),         # 10-30万円/㎡: green
             (300000, 500000, (255, 255, 0), 10),      # 30-50万円/㎡: yellow
             (500000, 1000000, (255, 165, 0), 12),     # 50-100万円/㎡: orange
-            (1000000, float('inf'), (255, 0, 0), 14), # 100万円/㎡~: red
+            (1000000, float('inf'), (255, 0, 0), 14),  # 100万円/㎡~: red
         ]
 
         ranges = []
@@ -1060,7 +1054,11 @@ class StyleManager:
         renderer = QgsGraduatedSymbolRenderer(field_name, ranges)
         layer.setRenderer(renderer)
         layer.triggerRepaint()
-        QgsMessageLog.logMessage(f'XKT015: Applied {"line" if is_line else "point"} graduated style', 'ReinfoLib', Qgis.Info)
+        style_type = "line" if is_line else "point"
+        QgsMessageLog.logMessage(
+            f'XKT015: Applied {style_type} graduated style',
+            'ReinfoLib', Qgis.Info
+        )
         return True
 
     @classmethod
@@ -1110,7 +1108,11 @@ class StyleManager:
                     if val is not None:
                         unique_values.add(str(val))
 
-                QgsMessageLog.logMessage(f'XKT022: Using field "{field_name}" with values: {list(unique_values)[:10]}', 'ReinfoLib', Qgis.Info)
+                vals = list(unique_values)[:10]
+                QgsMessageLog.logMessage(
+                    f'XKT022: Using field "{field_name}" with values: {vals}',
+                    'ReinfoLib', Qgis.Info
+                )
 
                 if unique_values:
                     categories = []
@@ -1159,7 +1161,7 @@ class StyleManager:
             renderer = QgsSingleSymbolRenderer(symbol)
         else:
             # For non-point geometries, use default
-            QgsMessageLog.logMessage(f'XKT022: Unexpected geometry type, using default', 'ReinfoLib', Qgis.Warning)
+            QgsMessageLog.logMessage('XKT022: Unexpected geometry type, using default', 'ReinfoLib', Qgis.Warning)
             return cls._apply_default_style(layer)
 
         layer.setRenderer(renderer)
@@ -1245,7 +1247,7 @@ class StyleManager:
         # Function to generate distinct color from string (for city names)
         def generate_color_from_string(s: str) -> Tuple[int, int, int, int]:
             """Generate a distinct color based on string hash."""
-            hash_val = int(hashlib.md5(s.encode()).hexdigest()[:8], 16)
+            hash_val = int(hashlib.sha256(s.encode()).hexdigest()[:8], 16)
             # Use HSV-like approach for better color distribution
             hue = (hash_val % 360)
             # Convert hue to RGB (simplified)
@@ -1309,7 +1311,7 @@ class StyleManager:
                 renderer = QgsSingleSymbolRenderer(symbol)
         else:
             # For non-point geometries, use fill/line symbols
-            QgsMessageLog.logMessage(f'XKT023: Unexpected geometry type, using default', 'ReinfoLib', Qgis.Warning)
+            QgsMessageLog.logMessage('XKT023: Unexpected geometry type, using default', 'ReinfoLib', Qgis.Warning)
             return cls._apply_default_style(layer)
 
         layer.setRenderer(renderer)
@@ -1364,7 +1366,10 @@ class StyleManager:
         # Fallback to categorical by name/area
         name_field = cls._find_field(layer, ['name', 'did_name', 'area_name', 'city_name'])
         if name_field:
-            QgsMessageLog.logMessage(f'XKT031: Using field "{name_field}" for categorical style', 'ReinfoLib', Qgis.Info)
+            QgsMessageLog.logMessage(
+                f'XKT031: Using field "{name_field}" for categorical style',
+                'ReinfoLib', Qgis.Info
+            )
             return cls._apply_unique_values_style(layer)
 
         # Default single color
@@ -1650,7 +1655,7 @@ class StyleManager:
 
         # Log ALL field values for first feature
         for feature in layer.getFeatures():
-            QgsMessageLog.logMessage(f'XKT013 sample feature fields:', 'ReinfoLib', Qgis.Info)
+            QgsMessageLog.logMessage('XKT013 sample feature fields:', 'ReinfoLib', Qgis.Info)
             for fn in field_names:
                 val = feature[fn]
                 QgsMessageLog.logMessage(f'  {fn} = {val} (type: {type(val).__name__})', 'ReinfoLib', Qgis.Info)
@@ -1662,7 +1667,11 @@ class StyleManager:
         selected_field_prefix = settings.get_xkt013_field()
         data_type = settings.get_xkt013_data_type()
 
-        QgsMessageLog.logMessage(f'XKT013: User selected year: {selected_year}, field: {selected_field_prefix}, type: {data_type}', 'ReinfoLib', Qgis.Info)
+        QgsMessageLog.logMessage(
+            f'XKT013: User selected year: {selected_year}, '
+            f'field: {selected_field_prefix}, type: {data_type}',
+            'ReinfoLib', Qgis.Info
+        )
 
         # Build the full field name: PREFIX_YEAR (e.g., PTN_2020, PT01_2020, RTA_2020)
         target_field = f'{selected_field_prefix}_{selected_year}'
@@ -1692,7 +1701,10 @@ class StyleManager:
                 for fn in field_names:
                     if fn == f'{selected_field_prefix}_{year}' or fn == f'{selected_field_prefix}{year}':
                         pop_field = fn
-                        QgsMessageLog.logMessage(f'XKT013: Selected field not found, using {pop_field}', 'ReinfoLib', Qgis.Warning)
+                        QgsMessageLog.logMessage(
+                            f'XKT013: Selected field not found, using {pop_field}',
+                            'ReinfoLib', Qgis.Warning
+                        )
                         break
                 if pop_field:
                     break
@@ -1709,7 +1721,10 @@ class StyleManager:
             for f in layer.fields():
                 if f.type() in [2, 4, 6]:  # Int, LongLong, Double
                     pop_field = f.name()
-                    QgsMessageLog.logMessage(f'XKT013: Using numeric field as fallback: {pop_field}', 'ReinfoLib', Qgis.Info)
+                    QgsMessageLog.logMessage(
+                        f'XKT013: Using numeric field as fallback: {pop_field}',
+                        'ReinfoLib', Qgis.Info
+                    )
                     break
 
         # Determine if this is a ratio field (different range)
@@ -1736,14 +1751,17 @@ class StyleManager:
                 except (ValueError, TypeError):
                     pass
 
-        QgsMessageLog.logMessage(f'XKT013: Data range for {pop_field}: {min_data_val} - {max_data_val}', 'ReinfoLib', Qgis.Info)
+        QgsMessageLog.logMessage(
+            f'XKT013: Data range for {pop_field}: {min_data_val} - {max_data_val}',
+            'ReinfoLib', Qgis.Info
+        )
 
         # Define ranges based on data type
         if is_ratio:
             # Check if values are 0-1 (decimal) or 0-100 (percentage)
             if max_data_val <= 1.0:
                 # Values are decimals (0.0 - 1.0)
-                QgsMessageLog.logMessage(f'XKT013: Ratio values appear to be decimals (0-1)', 'ReinfoLib', Qgis.Info)
+                QgsMessageLog.logMessage('XKT013: Ratio values appear to be decimals (0-1)', 'ReinfoLib', Qgis.Info)
                 DATA_RANGES = [
                     (0, 0.05, (255, 255, 230, 150), '0-5%'),
                     (0.05, 0.10, (255, 255, 180, 150), '5-10%'),
@@ -1757,7 +1775,10 @@ class StyleManager:
                 ]
             else:
                 # Values are percentages (0 - 100)
-                QgsMessageLog.logMessage(f'XKT013: Ratio values appear to be percentages (0-100)', 'ReinfoLib', Qgis.Info)
+                QgsMessageLog.logMessage(
+                    'XKT013: Ratio values appear to be percentages (0-100)',
+                    'ReinfoLib', Qgis.Info
+                )
                 DATA_RANGES = [
                     (0, 5, (255, 255, 230, 150), '0-5%'),
                     (5, 10, (255, 255, 180, 150), '5-10%'),
@@ -1914,7 +1935,10 @@ class StyleManager:
             # Filter: don't show label when value is "0"
             label_settings.drawLabels = True
             label_settings.isExpression = True
-            label_settings.fieldName = f'CASE WHEN "{label_field}" = \'0\' OR "{label_field}" IS NULL THEN \'\' ELSE "{label_field}" END'
+            label_settings.fieldName = (
+                f'CASE WHEN "{label_field}" = \'0\' OR "{label_field}" IS NULL '
+                f'THEN \'\' ELSE "{label_field}" END'
+            )
 
             # Text format
             text_format = QgsTextFormat()
@@ -1941,10 +1965,8 @@ class StyleManager:
 
     @classmethod
     def _apply_categorical_point_style(cls, layer: QgsVectorLayer,
-                                        color_dict: Dict, marker: str, size: int) -> bool:
+                                       color_dict: Dict, marker: str, size: int) -> bool:
         """Apply categorical point style using unique values."""
-        from qgis.core import QgsMessageLog, Qgis
-
         # Find first string field for categorization
         string_fields = [f for f in layer.fields() if f.type() == 10]
         if not string_fields:
@@ -1955,8 +1977,8 @@ class StyleManager:
 
     @classmethod
     def _apply_categorical_point_style_by_field(cls, layer: QgsVectorLayer,
-                                                 field_name: str, color_dict: Dict,
-                                                 marker: str, size: int) -> bool:
+                                                field_name: str, color_dict: Dict,
+                                                marker: str, size: int) -> bool:
         """Apply categorical point style by field with color matching."""
         from qgis.core import QgsMessageLog, Qgis
 

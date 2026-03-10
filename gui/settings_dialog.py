@@ -25,7 +25,6 @@ from qgis.PyQt.QtWidgets import (
     QMessageBox,
     QProgressDialog,
 )
-from qgis.core import QgsMessageLog, Qgis
 
 from ..core.settings_manager import SettingsManager
 from ..core.api_client import ApiClient

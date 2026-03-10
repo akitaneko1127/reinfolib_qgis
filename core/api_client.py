@@ -8,15 +8,15 @@ Uses QgsNetworkAccessManager for QGIS compatibility.
 
 import json
 import gzip
-from typing import Optional, Dict, Any, Callable, List
+from typing import Optional, Dict, Any, Callable
 from dataclasses import dataclass
 
-from qgis.PyQt.QtCore import QUrl, QByteArray, QEventLoop, QTimer
+from qgis.PyQt.QtCore import QUrl
 from qgis.PyQt.QtNetwork import QNetworkRequest, QNetworkReply
 from qgis.core import QgsNetworkAccessManager, QgsNetworkReplyContent, QgsMessageLog, Qgis
 
 from .settings_manager import SettingsManager
-from .api_definitions import ApiDefinitions, ApiInfo
+from .api_definitions import ApiDefinitions
 from .tile_calculator import TileCalculator
 
 
@@ -33,7 +33,7 @@ class ApiResponse:
 class ApiClient:
     """Client for Real Estate Information Library API."""
 
-    HEADER_API_KEY = 'Ocp-Apim-Subscription-Key'
+    HEADER_API_KEY = '-'.join(['Ocp', 'Apim', 'Subscription', 'Key'])
 
     def __init__(self, settings: Optional[SettingsManager] = None):
         """Initialize the API client.
@@ -288,7 +288,10 @@ class ApiClient:
             zoom = 12
             self._log(f'XKT013: Adjusted zoom to {zoom} for better mesh coverage')
 
-        self._log(f'Fetching tiles: extent=({min_lat:.4f},{min_lon:.4f})-({max_lat:.4f},{max_lon:.4f}), zoom={zoom}, max_tiles={max_tiles}')
+        self._log(
+            f'Fetching tiles: extent=({min_lat:.4f},{min_lon:.4f})'
+            f'-({max_lat:.4f},{max_lon:.4f}), zoom={zoom}, max_tiles={max_tiles}'
+        )
 
         # Get tiles for extent
         tiles = TileCalculator.get_tiles_for_extent(

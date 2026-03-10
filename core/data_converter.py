@@ -6,7 +6,6 @@ Converts API responses to QGIS layers.
 """
 
 import json
-import os
 import warnings
 from typing import Optional, Dict, Any, List
 
@@ -17,9 +16,7 @@ from qgis.core import (
     QgsGeometry,
     QgsField,
     QgsFields,
-    QgsCoordinateReferenceSystem,
     QgsVectorFileWriter,
-    QgsWkbTypes,
     QgsMessageLog,
     QgsPointXY,
     Qgis,
