@@ -27,7 +27,7 @@
 
 ### ZIPファイルから
 
-1. [Releases](https://github.com/linkfield/reinfolib-qgis/releases)から最新版をダウンロード
+1. [Releases](https://github.com/akitaneko1127/reinfolib_qgis/releases)から最新版をダウンロード
 2. プラグイン → プラグインの管理とインストール → ZIPからインストール
 3. ダウンロードしたZIPファイルを選択
 
@@ -87,5 +87,5 @@ Email: info@linkfield.co.jp
 
 ## サポート
 
-- [GitHub Issues](https://github.com/linkfield/reinfolib-qgis/issues)
+- [GitHub Issues](https://github.com/akitaneko1127/reinfolib_qgis/issues)
 - Email: info@linkfield.co.jp

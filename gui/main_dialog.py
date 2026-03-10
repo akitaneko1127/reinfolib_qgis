@@ -992,7 +992,28 @@ class MainDialog(QDialog):
                     wgs84,
                     QgsProject.instance()
                 )
-                extent = transform.transformBoundingBox(extent)
+                try:
+                    extent = transform.transformBoundingBox(extent)
+                except Exception:
+                    center = extent.center()
+                    try:
+                        center_point = transform.transform(center)
+                        delta = 0.005
+                        extent = QgsRectangle(
+                            center_point.x() - delta,
+                            center_point.y() - delta,
+                            center_point.x() + delta,
+                            center_point.y() + delta,
+                        )
+                    except Exception:
+                        QMessageBox.warning(
+                            self,
+                            '座標変換エラー',
+                            '現在の表示範囲の座標変換に失敗しました。\n'
+                            'キャンバスのCRSをEPSG:4326に変更するか、\n'
+                            '日本国内の範囲を表示してから再度お試しください。'
+                        )
+                        return None
 
             return extent
 
@@ -1028,6 +1049,8 @@ class MainDialog(QDialog):
 
         # Get extent
         extent = self._get_extent()
+        if extent is None:
+            return
 
         # Check output path if needed
         output_type = self.combo_output.currentData()

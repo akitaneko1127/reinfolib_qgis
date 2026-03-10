@@ -227,7 +227,7 @@ class ReinfoLibPlugin:
     def show_help(self):
         """Open online help in browser."""
         import webbrowser
-        webbrowser.open('https://github.com/linkfield/reinfolib-qgis#readme')
+        webbrowser.open('https://github.com/akitaneko1127/reinfolib_qgis#readme')
 
     def open_api_registration(self):
         """Open API registration page in browser."""
@@ -240,12 +240,12 @@ class ReinfoLibPlugin:
 
         about_text = self.tr(
             '<h3>ReinfoLib for QGIS</h3>'
-            '<p>Version 1.0.0</p>'
+            '<p>Version 1.0.1</p>'
             '<p>Access Japan\'s Real Estate Information Library API directly from QGIS.</p>'
             '<p><b>Developer:</b> Link Field</p>'
             '<p><b>Email:</b> info@linkfield.co.jp</p>'
             '<p><b>License:</b> GPL-3.0</p>'
-            '<p><a href="https://github.com/linkfield/reinfolib-qgis">GitHub Repository</a></p>'
+            '<p><a href="https://github.com/akitaneko1127/reinfolib_qgis">GitHub Repository</a></p>'
         )
 
         QMessageBox.about(

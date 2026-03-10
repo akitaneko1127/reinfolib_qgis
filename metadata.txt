@@ -17,9 +17,9 @@ about=This plugin provides direct access to the Real Estate Information Library 
     - API key from MLIT (free registration required)
     - Internet connection
 
-version=1.0.0
+version=1.0.1
 author=Link Field
-email=saito@link-field.jp
+email=info@linkfield.co.jp
 homepage=https://github.com/akitaneko1127/reinfolib_qgis
 repository=https://github.com/akitaneko1127/reinfolib_qgis
 tracker=https://github.com/akitaneko1127/reinfolib_qgis/issues
@@ -31,7 +31,10 @@ deprecated=False
 hasProcessingProvider=no
 server=False
 
-changelog=Version 1.0.0 (2025-01-24):
+changelog=Version 1.0.1 (2025-03-10):
+    - Fix coordinate transformation error when canvas CRS is not EPSG:4326
+    - Remove unused resources package
+    Version 1.0.0 (2025-01-24):
     - Initial release
     - Support for transaction prices and land values API
     - Support for urban planning data API
