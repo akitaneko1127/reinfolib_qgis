@@ -17,7 +17,7 @@ about=This plugin provides direct access to the Real Estate Information Library 
     - API key from MLIT (free registration required)
     - Internet connection
 
-version=1.0.1
+version=1.0.2
 author=Link Field
 email=info@linkfield.co.jp
 homepage=https://link-field.jp/
@@ -31,7 +31,10 @@ deprecated=False
 hasProcessingProvider=no
 server=False
 
-changelog=Version 1.0.1 (2025-03-10):
+changelog=Version 1.0.2 (2025-03-10):
+    - Fix security scan warnings (md5 to sha256, secrets detection)
+    - Fix all flake8 code quality issues
+    Version 1.0.1 (2025-03-10):
     - Fix coordinate transformation error when canvas CRS is not EPSG:4326
     - Remove unused resources package
     Version 1.0.0 (2025-01-24):

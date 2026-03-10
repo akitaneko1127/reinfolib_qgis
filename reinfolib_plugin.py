@@ -240,7 +240,7 @@ class ReinfoLibPlugin:
 
         about_text = self.tr(
             '<h3>ReinfoLib for QGIS</h3>'
-            '<p>Version 1.0.1</p>'
+            '<p>Version 1.0.2</p>'
             '<p>Access Japan\'s Real Estate Information Library API directly from QGIS.</p>'
             '<p><b>Developer:</b> Link Field</p>'
             '<p><b>Email:</b> info@linkfield.co.jp</p>'
